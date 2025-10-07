@@ -26,7 +26,7 @@ async function main() {
     "poblacion": 66.000,
     "pais": "España",
     "users": [
-      { user_id : user2._id as Types.ObjectId }
+      { user_id : user2.id as Types.ObjectId }
     ]
   };
 
@@ -52,14 +52,15 @@ async function main() {
   console.log("cityWithUsersemail", cityWithUsersemail); 
 
   // Leer un usuario específico por su ID
-  const usuario = await UserModel.findById(user2._id);
+  const usuario = await UserModel.findById(user2.id);
   console.log("get_usuario_by_id", usuario);
 
   // Actualizar un usuario por su ID
-  const usuario_update = await UserModel.findByIdAndUpdate(user2._id, { email: "cambiado@gmail.com" });
-  console.log("email cmabiado", usuario_update);
+  const usuario_update = await UserModel.findByIdAndUpdate(user2.id, { email: "cambiado@gmail.com" });
+  const usuario3 = await UserModel.findById(user2.id);
+  console.log("get_usuario_by_id", usuario3);
 
-  const usuario_eliminadi = await UserModel.findByIdAndDelete(user2._id);
+  const usuario_eliminadi = await UserModel.findByIdAndDelete(user2.id);
 
   console.log("usuario eliminado ", usuario_eliminadi);
 

@@ -52,5 +52,4 @@ Ejecutar JS
 node dist/mongoogse.js
 ```
 
-
-Las funtes usadas han sido copilot. Antes del seminario de mongoDB me informé sobre mongoDB para el seminario de express, mirando videos de youtube, pero para el seminario solo utilice copilot.
+Fonts utilitzades: ChatGPT y els videos de yt dels companys

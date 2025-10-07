@@ -1,20 +1,16 @@
 import { Schema, model, Types } from 'mongoose';
 
-// 1. Create an interface representing a TS object.
-export interface IUser {
+export interface IUser {//dice el tipo que son los atributos
   name: string;
   email: string;
   avatar?: string;
-  _id?: Types.ObjectId;
+  id?: Types.ObjectId;
 }
 
-// 2. Create a Schema corresponding to the document in MongoDB.
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser>({//como se tiene que guardar en mongoDB
   name: { type: String, required: true },
   email: { type: String, required: true },
   avatar: String,
-  //_id: {type :String, required: true}
 });
 
-// 3. Create a Model.
-export const UserModel = model('User', userSchema);
+export const UserModel = model('User', userSchema); //el constructor para converir a mongoDB
