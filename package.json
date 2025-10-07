@@ -8,8 +8,11 @@
   },
   "dependencies": {
     "mongoose": "^6.13.8"
+<<<<<<< HEAD
   },
   "devDependencies": {
     "@types/mongoose": "^5.11.96"
+=======
+>>>>>>> 985570f77bbbacc4a1ffa562459362470586476e
   }
 }
