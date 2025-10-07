@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose, {Types} from 'mongoose'; // npm install
 import { UserModel, IUser } from './user.js';
+import { CityModel, ICity } from './city.js';
 
 async function main() {
   mongoose.set('strictQuery', true); // Mantiene el comportamiento actual
@@ -16,23 +17,53 @@ async function main() {
 
   console.log("user1", user1); 
   const newUser= new UserModel(user1);
-  const user2: IUser = await newUser.save();
+  const user2: IUser = await newUser.save();//convierte a MongoDB el objeto, y se espera a que se guerde para pasar a  la siguiente linea
   console.log("user2",user2);
+  
+  const exampleCity: ICity = {
+    "nombre": "El Prat de Llobregat",
+    "codigoPostal": "08820",
+    "poblacion": 66.000,
+    "pais": "España",
+    "users": [
+      { user_id : user2.id as Types.ObjectId }
+    ]
+  };
 
-  // findById devuelve un objeto usando el _id.
-  const user3: IUser | null = await UserModel.findById(user2._id);
-  console.log("user3",user3);
 
-  // findOne devuelve un objeto usando un filtro.
-  const user4: IUser | null = await UserModel.findOne({name: 'Bill'});
-  console.log("user4",user4);
+  console.log("exampleCity", exampleCity);
 
-  // Partial<IUser> Indica que el objeto puede tener solo algunos campos de IUser.
-  // select('name email') solo devuelve name y email.
-  // lean() devuelve un objeto plano de JS en lugar de un documento de Mongoose.
-  const user5: Partial<IUser> | null  = await UserModel.findOne({ name: 'Bill' })
-    .select('name email').lean();
-  console.log("user5",user5);
+  const newCity = new CityModel(exampleCity);
+  const city: ICity = await newCity.save();
+  console.log("city", city);
+
+  // Consulta para obtener los usuarios que viven en la ciudad
+  const cityWithUsers = await CityModel.findOne({ nombre: 'El Prat de Llobregat' })
+  .populate('users.user_id')
+  .exec();
+
+  console.log("cityWithUsers", cityWithUsers); 
+
+  //solo el email
+    const cityWithUsersemail = await CityModel.findOne({ nombre: 'El Prat de Llobregat' })
+  .populate('users.user_id','name email')
+  .exec();
+
+  console.log("cityWithUsersemail", cityWithUsersemail); 
+
+  // Leer un usuario específico por su ID
+  const usuario = await UserModel.findById(user2.id);
+  console.log("get_usuario_by_id", usuario);
+
+  // Actualizar un usuario por su ID
+  const usuario_update = await UserModel.findByIdAndUpdate(user2.id, { email: "cambiado@gmail.com" });
+  const usuario3 = await UserModel.findById(user2.id);
+  console.log("get_usuario_by_id", usuario3);
+
+  const usuario_eliminadi = await UserModel.findByIdAndDelete(user2.id);
+
+  console.log("usuario eliminado ", usuario_eliminadi);
+
 }
 
 main()
